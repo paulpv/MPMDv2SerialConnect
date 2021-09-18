@@ -5,15 +5,22 @@
 # python -m serial.tools.miniterm COM7 115200
 #
 
-import os
+import platform
 import serial
 import time
+import sys
 
-print(f'OS: {os.name}')
-if os.name == 'nt':
+_system = platform.system()
+print(f'Platform: {_system}')
+if _system == 'Windows':
   portName = 'COM7'
-else:
+elif _system == 'Darwin':
   portName = '/dev/tty.usbserial-144230'
+else:
+  # For now assuming Raspberry Pi
+  portName = '/dev/USB0'
+print(f'portName={repr(portName)}')
+
 ser = serial.Serial(baudrate=115200,
   bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
   timeout=2, xonxoff=True, rtscts=True, write_timeout=None, dsrdtr=True, inter_byte_timeout=None,
@@ -26,6 +33,7 @@ if False:
   # ? https://github.com/pyserial/pyserial/issues/517#issuecomment-691797151
   print('#HACK experiment sleep 5 seconds before reading...')
   time.sleep(5)
+
 print('Reading...')
 seq = []
 while True:

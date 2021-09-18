@@ -1,6 +1,6 @@
-MPMDv2SerialConnect
+# MPMDv2SerialConnect
 
-Related to my my Raspberry Pi 3B+'s Octopi's pyserial not reading/writing from/to my Monoprice Mini Delta v2 (MPMDv2).
+Related to my Raspberry Pi 3B+'s Octopi's pyserial not reading/writing from/to my Monoprice Mini Delta v2 (MPMDv2).
 
 This repo contains 3 [mostly non-MPMDv2] working simple/basic serial reading apps (C#, C++, and Python) [plus a comment on how to use pyserial's serial.tools.miniterm].
 
@@ -8,7 +8,8 @@ All 3 of these apps, plus pyserial's miniterm, on Windows can read from a known 
 
 As soon as I point the apps to a MPMDv2, the only apps that can read from the MPMDv2 are the C# and the C++ (non-overlapped IO).
 
-On MacOS, the Python app and pyserial miniterm opens the MPMDv2 serial port fine!
+On MacOS, the Python app and pyserial miniterm opens the MPMDv2 serial port fine!  
+I haven't bothered trying to compile and run the C# or C++ code on MacOS; I would expect them to work fine.
 
 So, something seems wrong w/ pyserial talking to the MPMDv2 only on Windows or Raspberry Pi.
 
