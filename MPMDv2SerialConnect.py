@@ -8,7 +8,8 @@
 import serial
 import time
 
-portName = 'COM8'
+#portName = 'COM8'
+portName = '/dev/tty.usbserial-144230'
 ser = serial.Serial(baudrate=115200,
   bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
   timeout=2, xonxoff=True, rtscts=True, write_timeout=None, dsrdtr=True, inter_byte_timeout=None,
@@ -22,8 +23,14 @@ if False:
   print('#HACK experiment sleep 5 seconds before reading...')
   time.sleep(5)
 print('Reading...')
+seq = []
+count = 1
 while True:
-  data = ser.read(ser.in_waiting or 1)
-  #print(data)
-  if data:
-    print(data.decode('utf-8'), end='')
+  for c in ser.read(ser.in_waiting or 1):
+    c = chr(c)
+    if c == '\n':
+      print(''.join(str(v) for v in seq))
+      seq = []
+    else:
+      seq.append(c)
+ser.close()
