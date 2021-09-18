@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO.Ports;
 using System.Windows.Forms;
 
@@ -9,7 +9,7 @@ namespace MPMDv2SerialConnect
         [STAThread]
         static void Main(string[] args)
         {
-            var portName = "COM8";
+            var portName = "COM7";
             var port = new SerialPort(portName, 115200, Parity.None, 8, StopBits.One)
             {
                 Handshake = Handshake.None

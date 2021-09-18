@@ -3,7 +3,7 @@
 #include <atlstr.h>
 #include <comdef.h>
 
-#define PORT_NAME _T("\\\\.\\COM8")
+#define PORT_NAME _T("\\\\.\\COM7")
 #define READ_BUFFER_LENGTH 1024
 
 void printline(LPCTSTR pszFormat, ...) {
