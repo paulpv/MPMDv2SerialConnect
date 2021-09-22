@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 #
 # https://pyserial.readthedocs.io/en/latest/pyserial_api.html
 # curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
@@ -6,27 +7,15 @@
 # python -m serial.tools.miniterm COM7 115200
 #
 
+import argparse
 import platform
 import serial
-import time
 import sys
+import time
 
-_system = platform.system()
-print(f'Platform: {_system}')
-if _system == 'Windows':
-  portName = 'COM7'
-elif _system == 'Darwin':
-  # MacOS
-  portName = '/dev/tty.usbserial-144230'
-else:
-  # For now assuming Raspberry Pi
-  portName = '/dev/ttyUSB0'
-print(f'portName={repr(portName)}')
-
-
-def get_serial(portName, baudrate=115200, read_timeout=2):
-  print(f'Opening {portName} 115200 N 8 1 to read')
-  if False:
+def get_serial(portName, baudrate=115200, read_timeout=2, hack=False):
+  print(f'Opening {portName} {baudrate} N 8 1 to read')
+  if hack:
     # https://plugins.octoprint.org/plugins/malyan_connection_fix/
     # https://github.com/OctoPrint/OctoPrint/issues/2271
     # https://github.com/OctoPrint/OctoPrint-MalyanConnectionFix
@@ -46,24 +35,46 @@ def get_serial(portName, baudrate=115200, read_timeout=2):
     ser.open()
     return ser
 
-ser = get_serial(portName)
+def main():
+  _system = platform.system()
+  print(f'Platform: {_system}')
+  defaultPortName = {
+    'Windows':'COM7',
+    'Darwin':'/dev/tty.usbserial-144230', # MacOS
+  }.get(_system, '/dev/ttyUSB0') # Default assume Raspberry Pi
 
-if False:
-  timeout = 5
-  # ? https://github.com/pyserial/pyserial/issues/517#issuecomment-691797151
-  print(f'#HACK experiment sleep {timeout} seconds before reading...')
-  time.sleep(timeout)
+  parser = argparse.ArgumentParser(description='Read from serial port')
+  parser.add_argument('portName', nargs='?', help='serial port to read from', default=defaultPortName)
+  parser.add_argument('--hack', action='store_true', help='use Malyan double open hack', default=False)
+  args = parser.parse_args()
 
-print('Reading...')
-seq = []
-while True:
-  cs = ser.read(ser.in_waiting or 1)
-  #print(cs)
-  for c in cs:
-    c = chr(c)
-    if c == '\n':
-      print(''.join(str(v) for v in seq))
-      seq = []
-    else:
-      seq.append(c)
-ser.close()
+  portName = args.portName
+  print(f'portName={repr(portName)}')
+
+  hack = args.hack
+  print(f'hack={repr(hack)}')
+
+  ser = get_serial(portName, hack=hack)
+
+  if False:
+    timeout = 5
+    # ? https://github.com/pyserial/pyserial/issues/517#issuecomment-691797151
+    print(f'#HACK experiment sleep {timeout} seconds before reading...')
+    time.sleep(timeout)
+
+  print('Reading...')
+  seq = []
+  while True:
+    cs = ser.read(ser.in_waiting or 1)
+    #print(cs)
+    for c in cs:
+      c = chr(c)
+      if c == '\n':
+        print(''.join(str(v) for v in seq))
+        seq = []
+      else:
+        seq.append(c)
+  ser.close()
+
+if __name__ == "__main__":
+  main()
