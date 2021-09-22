@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{67DA16CF-9AB2-4195-9156-ACCD2368ED6D}"
 	ProjectSection(SolutionItems) = preProject
 		MPMDv2SerialConnect.py = MPMDv2SerialConnect.py
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MPMDv2SerialConnectNative", "MPMDv2SerialConnectNative\MPMDv2SerialConnectNative.vcxproj", "{2BDC6219-06FC-42DB-9690-247EF898F3AB}"
